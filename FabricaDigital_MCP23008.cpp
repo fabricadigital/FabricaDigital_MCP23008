@@ -12,11 +12,22 @@
 
 #include "FabricaDigital_MCP23008.h"
 
+FabricaDigital_MCP23008::FabricaDigital_MCP23008() {
+  this->m_i2cDir = 0x00;
+  return;
+}
+
 FabricaDigital_MCP23008::FabricaDigital_MCP23008(uint8_t i2cDir) {
   // Establecer dirección i2c
   this->m_i2cDir = i2cDir;
 
   return;
+}
+
+void FabricaDigital_MCP23008::begin(uint8_t direccionI2C) {
+  this->m_i2cDir = direccionI2C;
+
+  this->begin();
 }
 
 void FabricaDigital_MCP23008::begin() {
@@ -112,12 +123,37 @@ uint8_t FabricaDigital_MCP23008::digitalRead(uint8_t pin) {
   return (this->obtenerReg8(this->MCP23008_GPIO) >> pin) & 0x01;
 }
 
+void FabricaDigital_MCP23008::pullUp(uint8_t pin, uint8_t pullUp) {
+  uint8_t estadoPullUps;
+
+  // Los pines existen de 0 a 7
+  if (pin > 7)
+    return;
+
+  // Lee el estado de los pull-ups
+  estadoPullUps = obtenerReg8(MCP23008_GPPU);
+
+  // Activa o desactiva el pull-up
+  if (pullUp == HIGH) {
+    estadoPullUps |= 1 << pin;
+  } else {
+    estadoPullUps &= ~(1 << pin);
+  }
+
+  // Guarda el nuevo estado de los pull-ups
+  establecerReg8(MCP23008_GPPU, estadoPullUps);
+}
+
 void FabricaDigital_MCP23008::digitalWrite(uint8_t estado) {
   establecerReg8(this->MCP23008_GPIO, estado);
 }
 
 uint8_t FabricaDigital_MCP23008::digitalRead() {
   return obtenerReg8(this->MCP23008_GPIO);
+}
+
+void FabricaDigital_MCP23008::pullUp(uint8_t pullUps) {
+  establecerReg8(MCP23008_GPPU, pullUps);
 }
 
 void FabricaDigital_MCP23008::establecerReg8(uint8_t registro, uint8_t dato) {

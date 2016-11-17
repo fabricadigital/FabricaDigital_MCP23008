@@ -34,13 +34,17 @@
 
 class FabricaDigital_MCP23008 {
 public:
+  FabricaDigital_MCP23008();
   FabricaDigital_MCP23008(uint8_t i2cDir);
-	void begin();
-	void pinMode(uint8_t pin, uint8_t modo);
-	void digitalWrite(uint8_t pin, uint8_t estado);
-	uint8_t digitalRead(uint8_t pin);
-	void digitalWrite(uint8_t estado);
-	uint8_t digitalRead();
+  void begin(uint8_t direccionI2C);
+  void begin();
+  void pinMode(uint8_t pin, uint8_t modo);
+  void digitalWrite(uint8_t pin, uint8_t estado);
+  uint8_t digitalRead(uint8_t pin);
+  void pullUp(uint8_t pin, uint8_t pullUp);
+  void digitalWrite(uint8_t estado);
+  uint8_t digitalRead();
+  void pullUp(uint8_t pullUp);
 
 private:
   uint8_t m_i2cDir;

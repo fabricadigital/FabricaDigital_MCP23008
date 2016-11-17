@@ -3,3 +3,6 @@ begin	KEYWORD2
 pinMode	KEYWORD2
 digitalWrite KEYWORD2
 digitalRead KEYWORD2
+pullUp KEYWORD2
+establecerReg8 KEYWORD2
+obtenerReg8 KEYWORD2
